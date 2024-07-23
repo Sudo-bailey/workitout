@@ -6,7 +6,8 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    // Function to initialize Firebase
+    function initializeFirebase() {
       // Your web app's Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyCLt7KKDXGmjw1vnhREkFmGz1RUhNtvMhs",
@@ -21,7 +22,14 @@
 
       // Test if Firebase is initialized correctly
       console.log(firebase);
-    });
+    }
+
+    // Ensure Firebase SDKs are loaded before initializing Firebase
+    if (typeof firebase === 'undefined') {
+      console.error("Firebase SDK not loaded");
+    } else {
+      initializeFirebase();
+    }
   </script>
 </head>
 <body>
@@ -38,6 +46,7 @@
   </div>
 
   <script>
+    // Wait for DOM content to be loaded
     document.addEventListener('DOMContentLoaded', function() {
       // Login function
       window.login = function() {
@@ -71,7 +80,7 @@
             console.log("Signup successful:", user); // Debug log
             document.getElementById('login').style.display = 'none';
             document.getElementById('user-info').style.display = 'block';
-            document.getElementById('user-name').textContent = user.email);
+            document.getElementById('user-name').textContent = user.email;
           })
           .catch((error) => {
             const errorCode = error.code;
