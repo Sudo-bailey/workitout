@@ -1,33 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Firebase SDK Test</title>
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <title>Auth0 SDK Test</title>
+  <!-- Auth0 SDK -->
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/1.13/auth0-spa-js.production.js"></script>
 </head>
 <body>
-  <h1>Firebase SDK Test</h1>
-  <p>Check the console to see if Firebase is initialized.</p>
+  <h1>Auth0 SDK Test</h1>
+  <p id="status">Loading...</p>
+  <button id="login" style="display: none;">Login</button>
+  <button id="logout" style="display: none;">Logout</button>
   <script>
-    window.addEventListener('load', function() {
-      // Check if Firebase SDK is loaded
-      if (typeof firebase === 'undefined') {
-        console.error("Firebase SDK not loaded");
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Initialize Auth0
+      const auth0 = await createAuth0Client({
+        domain: "dev-fp8itdkymmgd76de.us.auth0.com",
+        client_id: "NCVbIBT5Aqa6MNUIeS32rzOb8oClEuA3"
+      });
+
+      // Check if the user is authenticated
+      const isAuthenticated = await auth0.isAuthenticated();
+
+      if (isAuthenticated) {
+        document.getElementById('status').innerText = 'Logged in';
+        document.getElementById('logout').style.display = 'block';
       } else {
-        console.log("Firebase SDK loaded successfully");
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyCLt7KKDXGmjw1vnhREkFmGz1RUhNtvMhs",
-          authDomain: "workitout-6d1d7.firebaseapp.com",
-          projectId: "workitout-6d1d7",
-          storageBucket: "workitout-6d1d7.appspot.com",
-          messagingSenderId: "820775263926",
-          appId: "1:820775263926:web:a07e89792473a2b610d017"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        console.log(firebase);
+        document.getElementById('status').innerText = 'Not logged in';
+        document.getElementById('login').style.display = 'block';
+      }
+
+      // Add event listeners for login and logout
+      document.getElementById('login').addEventListener('click', async function() {
+        await auth0.loginWithRedirect({
+          redirect_uri: window.location.origin
+        });
+      });
+
+      document.getElementById('logout').addEventListener('click', function() {
+        auth0.logout({
+          returnTo: window.location.origin
+        });
+      });
+
+      // Handle the authentication callback
+      if (window.location.search.includes('code=')) {
+        await auth0.handleRedirectCallback();
+        window.history.replaceState({}, document.title, window.location.pathname);
+        document.getElementById('status').innerText = 'Logged in';
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('logout').style.display = 'block';
       }
     });
   </script>
