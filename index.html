@@ -7,20 +7,23 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyCLt7KKDXGmjw1vnhREkFmGz1RUhNtvMhs",
-        authDomain: "workitout-6d1d7.firebaseapp.com",
-        projectId: "workitout-6d1d7",
-        storageBucket: "workitout-6d1d7.appspot.com",
-        messagingSenderId: "820775263926",
-        appId: "1:820775263926:web:a07e89792473a2b610d017"
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-
-      // Test if Firebase is initialized correctly
-      console.log(firebase);
+      if (typeof firebase === 'undefined') {
+        console.error("Firebase SDK not loaded");
+      } else {
+        console.log("Firebase SDK loaded successfully");
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyCLt7KKDXGmjw1vnhREkFmGz1RUhNtvMhs",
+          authDomain: "workitout-6d1d7.firebaseapp.com",
+          projectId: "workitout-6d1d7",
+          storageBucket: "workitout-6d1d7.appspot.com",
+          messagingSenderId: "820775263926",
+          appId: "1:820775263926:web:a07e89792473a2b610d017"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        console.log(firebase);
+      }
     });
   </script>
 </head>
