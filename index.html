@@ -12,47 +12,60 @@
   <button id="logout" style="display: none;">Logout</button>
   <script>
     document.addEventListener('DOMContentLoaded', async function() {
-      // Initialize Auth0
-      const auth0 = await createAuth0Client({
-        domain: "dev-fp8itdkymmgd76de.us.auth0.com",
-        client_id: "NCVbIBT5Aqa6MNUIeS32rzOb8oC1EuA3"
-      });
+      console.log("Page loaded");
 
-      // Check if the user is authenticated
-      const isAuthenticated = await auth0.isAuthenticated();
-
-      if (isAuthenticated) {
-        document.getElementById('status').innerText = 'Logged in';
-        document.getElementById('logout').style.display = 'block';
-        // Redirect to the protected page
-        window.location.href = "https://sudo-bailey.github.io/workitout/protected.html";
-      } else {
-        document.getElementById('status').innerText = 'Not logged in';
-        document.getElementById('login').style.display = 'block';
-      }
-
-      // Add event listeners for login and logout
-      document.getElementById('login').addEventListener('click', async function() {
-        await auth0.loginWithRedirect({
-          redirect_uri: window.location.origin + "https://sudo-bailey.github.io/workitout/protected.html"
+      try {
+        // Initialize Auth0
+        const auth0 = await createAuth0Client({
+          domain: "dev-fp8itdkymmgd76de.us.auth0.com",
+          client_id: "NCVbIBT5Aqa6MNUIeS32rzOb8oC1EuA3"
         });
-      });
 
-      document.getElementById('logout').addEventListener('click', function() {
-        auth0.logout({
-          returnTo: window.location.origin
+        console.log("Auth0 initialized");
+
+        // Check if the user is authenticated
+        const isAuthenticated = await auth0.isAuthenticated();
+        console.log("Is authenticated:", isAuthenticated);
+
+        if (isAuthenticated) {
+          document.getElementById('status').innerText = 'Logged in';
+          document.getElementById('logout').style.display = 'block';
+          // Redirect to the protected page
+          window.location.href = "/workitout/protected.html";
+        } else {
+          document.getElementById('status').innerText = 'Not logged in';
+          document.getElementById('login').style.display = 'block';
+        }
+
+        // Add event listeners for login and logout
+        document.getElementById('login').addEventListener('click', async function() {
+          console.log("Login button clicked");
+          await auth0.loginWithRedirect({
+            redirect_uri: window.location.origin + "/workitout/"
+          });
         });
-      });
 
-      // Handle the authentication callback
-      if (window.location.search.includes('code=')) {
-        await auth0.handleRedirectCallback();
-        window.history.replaceState({}, document.title, window.location.pathname);
-        document.getElementById('status').innerText = 'Logged in';
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('logout').style.display = 'block';
-        // Redirect to the protected page
-        window.location.href = "https://sudo-bailey.github.io/workitout/protected.html";
+        document.getElementById('logout').addEventListener('click', function() {
+          console.log("Logout button clicked");
+          auth0.logout({
+            returnTo: window.location.origin
+          });
+        });
+
+        // Handle the authentication callback
+        if (window.location.search.includes('code=')) {
+          console.log("Handling authentication callback");
+          await auth0.handleRedirectCallback();
+          window.history.replaceState({}, document.title, window.location.pathname);
+          document.getElementById('status').innerText = 'Logged in';
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('logout').style.display = 'block';
+          // Redirect to the protected page
+          window.location.href = "/workitout/protected.html";
+        }
+      } catch (e) {
+        console.error("Error during Auth0 initialization", e);
+        document.getElementById('status').innerText = 'Error: ' + e.message;
       }
     });
   </script>
