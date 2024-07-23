@@ -2,28 +2,22 @@
 <html>
 <head>
   <title>Welcome to My Website</title>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCLt7KKDXGmjw1vnhREkFmGz1RUhNtvMhs",
-    authDomain: "workitout-6d1d7.firebaseapp.com",
-    projectId: "workitout-6d1d7",
-    storageBucket: "workitout-6d1d7.appspot.com",
-    messagingSenderId: "820775263926",
-    appId: "1:820775263926:web:a07e89792473a2b610d017"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-</script>
-
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCLt7KKDXGmjw1vnhREkFmGz1RUhNtvMhs",
+      authDomain: "workitout-6d1d7.firebaseapp.com",
+      projectId: "workitout-6d1d7",
+      storageBucket: "workitout-6d1d7.appspot.com",
+      messagingSenderId: "820775263926",
+      appId: "1:820775263926:web:a07e89792473a2b610d017"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </head>
 <body>
   <div id="login">
