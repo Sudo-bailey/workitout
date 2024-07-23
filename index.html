@@ -3,23 +3,25 @@
 <head>
   <title>Welcome to My Website</title>
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script>
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCLt7KKDXGmjw1vnhREkFmGz1RUhNtvMhs",
-      authDomain: "workitout-6d1d7.firebaseapp.com",
-      projectId: "workitout-6d1d7",
-      storageBucket: "workitout-6d1d7.appspot.com",
-      messagingSenderId: "820775263926",
-      appId: "1:820775263926:web:a07e89792473a2b610d017"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    document.addEventListener('DOMContentLoaded', function() {
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyCLt7KKDXGmjw1vnhREkFmGz1RUhNtvMhs",
+        authDomain: "workitout-6d1d7.firebaseapp.com",
+        projectId: "workitout-6d1d7",
+        storageBucket: "workitout-6d1d7.appspot.com",
+        messagingSenderId: "820775263926",
+        appId: "1:820775263926:web:a07e89792473a2b610d017"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
 
-    // Test if Firebase is initialized correctly
-    console.log(firebase);
+      // Test if Firebase is initialized correctly
+      console.log(firebase);
+    });
   </script>
 </head>
 <body>
@@ -36,72 +38,74 @@
   </div>
 
   <script>
-    // Login function
-    function login() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      console.log("Attempting to log in with email:", email); // Debug log
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log("Login successful:", user); // Debug log
+    document.addEventListener('DOMContentLoaded', function() {
+      // Login function
+      window.login = function() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        console.log("Attempting to log in with email:", email); // Debug log
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("Login successful:", user); // Debug log
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('user-info').style.display = 'block';
+            document.getElementById('user-name').textContent = user.email;
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Login error:", errorCode, errorMessage); // Debug log
+            alert(`Error: ${errorMessage}`);
+          });
+      };
+
+      // Signup function
+      window.signup = function() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        console.log("Attempting to sign up with email:", email); // Debug log
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("Signup successful:", user); // Debug log
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('user-info').style.display = 'block';
+            document.getElementById('user-name').textContent = user.email;
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("Signup error:", errorCode, errorMessage); // Debug log
+            alert(`Error: ${errorMessage}`);
+          });
+      };
+
+      // Logout function
+      window.logout = function() {
+        firebase.auth().signOut().then(() => {
+          console.log("Logout successful"); // Debug log
+          document.getElementById('login').style.display = 'block';
+          document.getElementById('user-info').style.display = 'none';
+        }).catch((error) => {
+          console.error("Logout error:", error); // Debug log
+          alert(`Error: ${error.message}`);
+        });
+      };
+
+      // Auth state listener
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          console.log("User is signed in:", user); // Debug log
           document.getElementById('login').style.display = 'none';
           document.getElementById('user-info').style.display = 'block';
           document.getElementById('user-name').textContent = user.email;
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.error("Login error:", errorCode, errorMessage); // Debug log
-          alert(`Error: ${errorMessage}`);
-        });
-    }
-
-    // Signup function
-    function signup() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      console.log("Attempting to sign up with email:", email); // Debug log
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log("Signup successful:", user); // Debug log
-          document.getElementById('login').style.display = 'none';
-          document.getElementById('user-info').style.display = 'block';
-          document.getElementById('user-name').textContent = user.email;
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.error("Signup error:", errorCode, errorMessage); // Debug log
-          alert(`Error: ${errorMessage}`);
-        });
-    }
-
-    // Logout function
-    function logout() {
-      firebase.auth().signOut().then(() => {
-        console.log("Logout successful"); // Debug log
-        document.getElementById('login').style.display = 'block';
-        document.getElementById('user-info').style.display = 'none';
-      }).catch((error) => {
-        console.error("Logout error:", error); // Debug log
-        alert(`Error: ${error.message}`);
+        } else {
+          console.log("No user is signed in"); // Debug log
+          document.getElementById('login').style.display = 'block';
+          document.getElementById('user-info').style.display = 'none';
+        }
       });
-    }
-
-    // Auth state listener
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log("User is signed in:", user); // Debug log
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('user-info').style.display = 'block';
-        document.getElementById('user-name').textContent = user.email;
-      } else {
-        console.log("No user is signed in"); // Debug log
-        document.getElementById('login').style.display = 'block';
-        document.getElementById('user-info').style.display = 'none';
-      }
     });
   </script>
 </body>
