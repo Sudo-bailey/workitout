@@ -34,7 +34,7 @@
       // Add event listeners for login and logout
       document.getElementById('login').addEventListener('click', async function() {
         await auth0.loginWithRedirect({
-          redirect_uri: window.location.origin
+          redirect_uri: window.location.origin + "/workitout/protected.html"
         });
       });
 
