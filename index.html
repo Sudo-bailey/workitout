@@ -18,7 +18,7 @@
         // Initialize Auth0
         const auth0 = await createAuth0Client({
           domain: "dev-fp8itdkymmgd76de.us.auth0.com",
-          client_id: "NCVbIBT5Aqa6MNUIeS32rzOb8oC1EuA3"
+          client_id: "cRWzS4qkWynnxhcmvC06f0fjQt35wZ4Z"
         });
 
         console.log("Auth0 initialized");
@@ -41,14 +41,18 @@
         document.getElementById('login').addEventListener('click', async function() {
           console.log("Login button clicked");
           await auth0.loginWithRedirect({
-            redirect_uri: window.location.origin + "/workitout/"
+            authorizationParams: {
+              redirect_uri: window.location.origin + "/workitout/"
+            }
           });
         });
 
         document.getElementById('logout').addEventListener('click', function() {
           console.log("Logout button clicked");
           auth0.logout({
-            returnTo: window.location.origin
+            logoutParams: {
+              returnTo: window.location.origin
+            }
           });
         });
 
