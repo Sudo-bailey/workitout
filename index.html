@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Welcome to My Website</title>
+  <title>Firebase SDK Test</title>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('load', function() {
+      // Check if Firebase SDK is loaded
       if (typeof firebase === 'undefined') {
         console.error("Firebase SDK not loaded");
       } else {
@@ -28,7 +29,7 @@
   </script>
 </head>
 <body>
-  <h1>Welcome to My Website</h1>
+  <h1>Firebase SDK Test</h1>
   <p>Check the console to see if Firebase is initialized.</p>
 </body>
 </html>
