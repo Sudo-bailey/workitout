@@ -2,9 +2,100 @@
 <html>
 <head>
   <title>Welcome to My Website</title>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCLt7KKDXGmjw1vnhREkFmGz1RUhNtvMhs",
+    authDomain: "workitout-6d1d7.firebaseapp.com",
+    projectId: "workitout-6d1d7",
+    storageBucket: "workitout-6d1d7.appspot.com",
+    messagingSenderId: "820775263926",
+    appId: "1:820775263926:web:a07e89792473a2b610d017"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <p>This is my first GitHub Pages website.</p>
+  <div id="login">
+    <h2>Login</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+  </div>
+  <div id="user-info" style="display: none;">
+    <h2>Welcome, <span id="user-name"></span></h2>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    // Login function
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('user-info').style.display = 'block';
+          document.getElementById('user-name').textContent = user.email;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(`Error: ${errorMessage}`);
+        });
+    }
+
+    // Signup function
+    function signup() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          document.getElementById('login').style.display = 'none';
+          document.getElementById('user-info').style.display = 'block';
+          document.getElementById('user-name').textContent = user.email;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(`Error: ${errorMessage}`);
+        });
+    }
+
+    // Logout function
+    function logout() {
+      firebase.auth().signOut().then(() => {
+        document.getElementById('login').style.display = 'block';
+        document.getElementById('user-info').style.display = 'none';
+      }).catch((error) => {
+        alert(`Error: ${error.message}`);
+      });
+    }
+
+    // Auth state listener
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('user-info').style.display = 'block';
+        document.getElementById('user-name').textContent = user.email;
+      } else {
+        document.getElementById('login').style.display = 'block';
+        document.getElementById('user-info').style.display = 'none';
+      }
+    });
+  </script>
 </body>
 </html>
