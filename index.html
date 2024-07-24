@@ -2,39 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Okta Authentication</title>
-    <script src="https://global.oktacdn.com/okta-auth-js/5.3.1/okta-auth-js.min.js"></script>
+    <title>Image Upload</title>
 </head>
 <body>
-    <h1>Okta Authentication</h1>
-    <button id="login">Login</button>
-    <button id="logout" style="display: none;">Logout</button>
+    <h1>Upload Image</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <button type="submit">Upload</button>
+    </form>
     <script>
-        const oktaAuth = new OktaAuth({
-            clientId: 'G7WD2Bd5rbZcosnoy8ux0UP8qqqWBozI',
-            issuer: 'https://dev-p6i50wsqzzpg0biz.us.auth0.com',
-            redirectUri: 'https://sudo-bailey.github.io/workitout/protected.html',
-            scopes: ['openid', 'profile', 'email']
-        });
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('image', document.querySelector('input[type="file"]').files[0]);
 
-        document.getElementById('login').addEventListener('click', () => {
-            oktaAuth.signInWithRedirect();
-        });
-
-        document.getElementById('logout').addEventListener('click', () => {
-            oktaAuth.signOut();
-        });
-
-        oktaAuth.tokenManager.get('idToken')
-            .then(idToken => {
-                if (idToken) {
-                    document.getElementById('login').style.display = 'none';
-                    document.getElementById('logout').style.display = 'block';
-                }
-            })
-            .catch(err => {
-                console.error(err);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
             });
+
+            const result = await response.json();
+            alert(result.message);
+        });
     </script>
 </body>
 </html>
